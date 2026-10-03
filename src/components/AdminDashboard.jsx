@@ -64,17 +64,29 @@ export const AdminDashboard = ({ onLogout }) => {
   };
 
   const handleOpenEdit = (item) => {
-    setFormData({ ...item });
+    const copy = { ...item };
+    if (Array.isArray(item.highlights)) {
+      copy.highlightsInput = item.highlights.join('\n');
+    }
+    setFormData(copy);
     setEditingItem(item.id);
     setIsNewModalOpen(true);
   };
 
   const handleSave = async (e) => {
     e.preventDefault();
+    const payload = { ...formData };
+    if (payload.highlightsInput !== undefined) {
+      payload.highlights = payload.highlightsInput
+        .split('\n')
+        .map(s => s.trim())
+        .filter(Boolean);
+      delete payload.highlightsInput;
+    }
     if (editingItem) {
-      await updateCollectionItem(activeTab, editingItem, formData);
+      await updateCollectionItem(activeTab, editingItem, payload);
     } else {
-      await addCollectionItem(activeTab, formData);
+      await addCollectionItem(activeTab, payload);
     }
     setIsNewModalOpen(false);
     setFormData({});
@@ -225,7 +237,17 @@ export const AdminDashboard = ({ onLogout }) => {
                   </button>
                 </div>
               </div>
-              {exp.description && <p className="text-xs text-slate-600">{exp.description}</p>}
+              {exp.description && <p className="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-lg border border-slate-100 italic">"{exp.description}"</p>}
+              {exp.highlights && exp.highlights.length > 0 && (
+                <ul className="space-y-1 pt-1">
+                  {exp.highlights.map((h, i) => (
+                    <li key={i} className="text-xs text-slate-700 flex items-start gap-1.5">
+                      <span className="text-teal-600 font-bold">•</span>
+                      <span>{h}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </TiltCard>
           ))}
         </div>
@@ -324,7 +346,7 @@ export const AdminDashboard = ({ onLogout }) => {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="glass-card max-w-lg w-full p-6 rounded-3xl space-y-5 shadow-2xl border-slate-300"
+              className="glass-card max-w-lg w-full p-6 rounded-3xl space-y-5 shadow-2xl border-slate-300 max-h-[90vh] overflow-y-auto"
             >
               <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                 <h3 className="font-bold text-slate-900 text-lg capitalize">
@@ -418,6 +440,26 @@ export const AdminDashboard = ({ onLogout }) => {
                           className="w-full p-3 rounded-xl border border-slate-300 text-sm"
                         />
                       </div>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">Role Overview / Description</label>
+                      <textarea
+                        rows="3"
+                        value={formData.description || ''}
+                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                        placeholder="Summary of responsibilities and achievements..."
+                        className="w-full p-3 rounded-xl border border-slate-300 text-sm"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">Key Deliverables & Bullet Highlights (One per line)</label>
+                      <textarea
+                        rows="4"
+                        value={formData.highlightsInput || ''}
+                        onChange={(e) => setFormData({ ...formData, highlightsInput: e.target.value })}
+                        placeholder="e.g. Managed paid campaigns across Google Ads & Meta&#10;Spearheaded SEO analytics & backlink strategy&#10;Crafted email marketing sequences"
+                        className="w-full p-3 rounded-xl border border-slate-300 text-sm"
+                      />
                     </div>
                   </>
                 )}
