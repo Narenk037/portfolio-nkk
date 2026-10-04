@@ -5,7 +5,6 @@ import { Hero } from './components/Hero';
 import { About } from './components/About';
 import { Skills } from './components/Skills';
 import { Experience } from './components/Experience';
-import { Projects } from './components/Projects';
 import { Certificates } from './components/Certificates';
 import { Interests } from './components/Interests';
 import { Contact } from './components/Contact';
@@ -23,7 +22,6 @@ function PortfolioMain({ data, isAuthenticated }) {
   const education = data.education || initialData.education;
   const skills = data.skills || initialData.skills;
   const experience = data.experience || initialData.experience;
-  const projects = data.projects || initialData.projects;
   const certificates = data.certificates || initialData.certificates;
   const interests = data.interests || initialData.interests;
 
@@ -32,10 +30,9 @@ function PortfolioMain({ data, isAuthenticated }) {
       <Navbar isAuthenticated={isAuthenticated} />
       <main>
         <Hero profile={profile} />
-        <About profile={profile} education={education} stats={stats} />
+        <About profile={profile} education={education} stats={stats} experience={experience} />
         <Skills skills={skills} />
         <Experience experience={experience} />
-        <Projects projects={projects} />
         <Certificates certificates={certificates} />
         <Interests interests={interests} />
         <Contact profile={profile} />

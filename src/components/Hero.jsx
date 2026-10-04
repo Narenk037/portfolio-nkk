@@ -10,16 +10,17 @@ import {
   BarChart2, 
   Target, 
   Share2, 
-  MousePointer,
+  User,
   CheckCircle2,
-  Sparkles
+  Sparkles,
+  Award
 } from 'lucide-react';
 import { Linkedin } from './LinkedinIcon';
 import { TiltCard } from './TiltCard';
 
 export const Hero = ({ profile }) => {
   const roles = profile.roles || [
-    "Digital Marketing Executive",
+    "Digital Marketing Specialist",
     "SEO & SEM Specialist",
     "Social Media Strategist",
     "Performance Marketer"
@@ -53,13 +54,12 @@ export const Hero = ({ profile }) => {
   }, [displayText, isDeleting, currentRoleIndex, roles]);
 
   const handleDownloadResume = () => {
-    // Generate clean text resume / alert for user
     const resumeText = `Narendiran K K - Digital Marketing Executive\nEmail: ${profile.email}\nPhone: ${profile.phone}\nLocation: ${profile.location}\nLinkedIn: ${profile.linkedin}\n\nKey Skills: Google Ads, Meta Ads, SEO, SEM, SMM, Content Writing, Email Marketing, WhatsApp Campaigns.`;
     const blob = new Blob([resumeText], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'Narendiran_KK_Digital_Marketing_Executive_Resume.txt';
+    link.download = 'Narendiran_cv.pdf';
     link.click();
     URL.revokeObjectURL(url);
   };
@@ -158,101 +158,47 @@ export const Hero = ({ profile }) => {
 
           </motion.div>
 
-          {/* Right Column: Light Marketing Analytics & Tool Ring Graphic */}
+          {/* Right Column: Profile Photo Frame */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="lg:col-span-5 relative"
+            className="lg:col-span-5 relative flex justify-center"
           >
-            <TiltCard className="p-6 sm:p-8 space-y-6 relative z-10 border-slate-200/90 shadow-xl">
+            <TiltCard className="p-4 sm:p-6 relative z-10 border-slate-200/90 shadow-2xl rounded-3xl max-w-sm w-full bg-white/90">
               
-              {/* Card Header */}
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center font-bold">
-                    <BarChart2 className="w-5 h-5" />
+              {/* Profile Image Container */}
+              <div className="relative rounded-2xl overflow-hidden aspect-4/5 bg-gradient-to-br from-blue-50 via-slate-100 to-sky-100 flex items-center justify-center border border-slate-200 shadow-inner group">
+                <img 
+                  src={profile.photoUrl || "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80"} 
+                  alt={profile.name}
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                />
+                
+                {/* Gradient Overlay & Watermark Badge */}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent flex items-end p-4">
+                  <div className="text-white space-y-0.5">
+                    <h3 className="font-bold text-lg leading-tight">{profile.name}</h3>
+                    <p className="text-xs text-sky-200 font-medium">Digital Marketing Specialist</p>
                   </div>
-                  <div>
-                    <h3 className="font-bold text-slate-900 text-base">Campaign Analytics</h3>
-                    <p className="text-xs text-slate-500">Live ROI & Performance Overview</p>
-                  </div>
-                </div>
-                <span className="px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 text-xs font-semibold border border-emerald-200">
-                  +34.2% YoY Growth
-                </span>
-              </div>
-
-              {/* Dynamic Growth Metric Grid */}
-              <div className="grid grid-cols-3 gap-3">
-                <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 text-center">
-                  <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Avg CTR</span>
-                  <p className="text-xl font-bold text-blue-600 mt-0.5">4.8%</p>
-                  <span className="text-[10px] text-emerald-600 font-medium">↑ High Intent</span>
-                </div>
-                <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 text-center">
-                  <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Avg CPC</span>
-                  <p className="text-xl font-bold text-teal-600 mt-0.5">₹12.40</p>
-                  <span className="text-[10px] text-emerald-600 font-medium">↓ -24% Saved</span>
-                </div>
-                <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 text-center">
-                  <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Target CPA</span>
-                  <p className="text-xl font-bold text-orange-600 mt-0.5">Optimal</p>
-                  <span className="text-[10px] text-emerald-600 font-medium">Top Quality</span>
                 </div>
               </div>
 
-              {/* Visual Campaign Bar Chart */}
-              <div className="space-y-3 pt-2">
-                <div className="flex justify-between text-xs font-semibold text-slate-700">
-                  <span>Google Ads Campaign Conversion</span>
-                  <span className="text-blue-600 font-bold">92% Target</span>
+              {/* Floating Highlight Badges */}
+              <div className="pt-4 grid grid-cols-2 gap-2">
+                <div className="p-2.5 rounded-xl bg-blue-50 border border-blue-100 text-center">
+                  <span className="text-[10px] font-bold uppercase text-blue-600 tracking-wider block">Specialization</span>
+                  <span className="text-xs font-bold text-slate-800">Performance Ads</span>
                 </div>
-                <div className="w-full bg-slate-100 h-3 rounded-full overflow-hidden p-0.5">
-                  <motion.div 
-                    initial={{ width: 0 }}
-                    animate={{ width: "92%" }}
-                    transition={{ duration: 1.2, delay: 0.5 }}
-                    className="h-full bg-gradient-to-r from-blue-600 to-sky-400 rounded-full"
-                  />
-                </div>
-
-                <div className="flex justify-between text-xs font-semibold text-slate-700 pt-1">
-                  <span>Meta Ads Lead Generation</span>
-                  <span className="text-teal-600 font-bold">88% Qualified</span>
-                </div>
-                <div className="w-full bg-slate-100 h-3 rounded-full overflow-hidden p-0.5">
-                  <motion.div 
-                    initial={{ width: 0 }}
-                    animate={{ width: "88%" }}
-                    transition={{ duration: 1.2, delay: 0.7 }}
-                    className="h-full bg-gradient-to-r from-teal-500 to-emerald-400 rounded-full"
-                  />
-                </div>
-              </div>
-
-              {/* Orbiting Marketing Tool Icon Row */}
-              <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-                <span className="text-xs font-medium text-slate-500">Tools Ecosystem:</span>
-                <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-lg bg-blue-50 text-blue-600 border border-blue-100 hover:scale-110 transition-transform" title="Google Ads">
-                    <Target className="w-4 h-4" />
-                  </div>
-                  <div className="p-2 rounded-lg bg-sky-50 text-sky-600 border border-sky-100 hover:scale-110 transition-transform" title="Meta Campaigns">
-                    <Share2 className="w-4 h-4" />
-                  </div>
-                  <div className="p-2 rounded-lg bg-teal-50 text-teal-600 border border-teal-100 hover:scale-110 transition-transform" title="Analytics">
-                    <BarChart2 className="w-4 h-4" />
-                  </div>
-                  <div className="p-2 rounded-lg bg-orange-50 text-orange-600 border border-orange-100 hover:scale-110 transition-transform" title="Email & CRM">
-                    <Mail className="w-4 h-4" />
-                  </div>
+                <div className="p-2.5 rounded-xl bg-teal-50 border border-teal-100 text-center">
+                  <span className="text-[10px] font-bold uppercase text-teal-600 tracking-wider block">SEO & SMM</span>
+                  <span className="text-xs font-bold text-slate-800">Growth Strategy</span>
                 </div>
               </div>
 
             </TiltCard>
 
-            {/* Decorative Light Backdrop Ring */}
+            {/* Decorative Light Backdrop Glow */}
             <div className="absolute -inset-4 bg-gradient-to-r from-blue-200 via-sky-100 to-teal-200 rounded-3xl blur-2xl opacity-50 -z-10" />
           </motion.div>
 

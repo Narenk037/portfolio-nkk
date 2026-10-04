@@ -19,7 +19,7 @@ import {
 import { db, auth, isConfigValid } from "../firebase/config";
 import { initialData } from "../data/initialData";
 
-const STORAGE_KEY = "nkk_portfolio_local_data_v1";
+const STORAGE_KEY = "nkk_portfolio_local_data_v2";
 const AUTH_KEY = "nkk_admin_authenticated";
 
 // Map collection names to handle plural variations (e.g. experience vs experiences)
@@ -28,7 +28,7 @@ const getFirestoreCollectionName = (name) => {
   return name;
 };
 
-// Initialize Local Storage if missing
+// Initialize Local Storage if missing, merging updated initialData profile
 const getLocalData = () => {
   const stored = localStorage.getItem(STORAGE_KEY);
   if (!stored) {
@@ -36,7 +36,12 @@ const getLocalData = () => {
     return initialData;
   }
   try {
-    return JSON.parse(stored);
+    const parsed = JSON.parse(stored);
+    return {
+      ...parsed,
+      profile: { ...initialData.profile, ...(parsed.profile || {}) },
+      stats: initialData.stats
+    };
   } catch (e) {
     return initialData;
   }

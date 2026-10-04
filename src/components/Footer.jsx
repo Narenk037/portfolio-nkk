@@ -26,7 +26,6 @@ export const Footer = ({ profile }) => {
             <a href="#about" className="hover:text-blue-600 transition-colors">About</a>
             <a href="#skills" className="hover:text-blue-600 transition-colors">Skills</a>
             <a href="#experience" className="hover:text-blue-600 transition-colors">Experience</a>
-            <a href="#projects" className="hover:text-blue-600 transition-colors">Campaigns</a>
             <a href="#certificates" className="hover:text-blue-600 transition-colors">Certificates</a>
             <a href="#contact" className="hover:text-blue-600 transition-colors">Contact</a>
           </div>

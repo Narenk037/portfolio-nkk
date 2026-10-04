@@ -3,23 +3,27 @@ export const initialData = {
     name: "Narendiran K K",
     title: "Digital Marketing Executive",
     roles: [
-      "Digital Marketing Executive",
+      "Digital Marketing Specialist",
       "SEO & SEM Specialist",
       "Social Media Strategist",
       "Performance Marketer"
     ],
-    tagline: "Performance-focused Digital Marketing Executive skilled in Google Ads, Meta campaigns, SEO, and data-driven growth strategies (CTR, CPC, CPA).",
+    tagline: "Performance-focused Digital Marketing Specialist with experience in performance marketing, SEO, and social media marketing. Experienced in managing Google Ads and Meta campaigns, optimizing digital presence, and analyzing key performance metrics such as CTR, CPC, CPA, and conversions. Skilled in developing data-driven marketing strategies, managing social media activities, and supporting lead generation and brand growth.",
     email: "rameshnarendiran@gmail.com",
     phone: "+91 9500448091",
     location: "Chennai, Tamil Nadu, India",
     linkedin: "https://linkedin.com/in/narendiran-k-k",
-    bio: "Performance-focused Digital Marketing Executive with hands-on experience in managing high-ROI paid ad campaigns (Google Ads, Meta Ads), search engine optimization (SEO), and multi-channel social media strategies. Adept at turning audience analytics into actionable campaigns that drive higher CTR, lower CPC, and optimal customer acquisition costs."
+    bio: `I specialize in Performance Marketing, Social Media Marketing, SEO, Content Strategy, and Digital Analytics. My experience includes working with Google Ads, Meta Ads, LinkedIn, social media platforms, email marketing, and lead generation campaigns.
+
+I enjoy understanding audience behaviour, analysing campaign performance, and turning data into practical marketing strategies. Along with execution, I also have experience in team coordination and handling digital marketing activities from strategy to implementation.
+
+I’m continuously exploring new digital trends, tools, and strategies to improve my skills and create better marketing outcomes for businesses.
+
+My goal is simple - create meaningful digital experiences, generate measurable results, and keep growing as a digital marketing professional.`
   },
   stats: [
     { label: "Experience", value: "1.5+", suffix: " Years" },
-    { label: "Paid Ad Campaigns", value: "50+", suffix: " Managed" },
-    { label: "Organic Traffic Growth", value: "150%", suffix: " Achieved" },
-    { label: "Core Expertise", value: "SEO / SEM / SMM", suffix: " Specialist" }
+    { label: "Paid Ad Campaigns", value: "50+", suffix: " Managed" }
   ],
   education: [
     {
@@ -141,44 +145,6 @@ export const initialData = {
       year: "2024",
       iconName: "FileCheck",
       description: "Comprehensive certification covering computer operations, office software, web tools, and database management."
-    }
-  ],
-  projects: [
-    {
-      id: "proj-1",
-      title: "Google Ads High-ROAS Search & Display Campaign",
-      category: "SEM / Google Ads",
-      description: "Designed targeted keyword ad groups, ad extensions, and negative keyword lists for a high-intent commercial campaign.",
-      metrics: { ctr: "4.8%", cpc: "₹12.40", cpa: "-22%", roas: "3.8x" },
-      tools: ["Google Ads", "Google Analytics 4", "Keyword Planner"],
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-      id: "proj-2",
-      title: "Meta Ads Lead Generation Funnel",
-      category: "SMM / Meta Ads",
-      description: "Built custom audience lookalikes and video reel ad sets across Facebook and Instagram to drive inbound qualified leads.",
-      metrics: { ctr: "3.9%", cpc: "₹18.50", cpa: "-30%", roas: "4.2x" },
-      tools: ["Meta Business Suite", "Canva", "Zapier"],
-      image: "https://images.unsplash.com/photo-1533750349088-cd871a92f312?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-      id: "proj-3",
-      title: "Technical & On-Page SEO Overhaul",
-      category: "SEO",
-      description: "Executed comprehensive site speed optimization, schema markup, directory submissions, and content keyword alignment.",
-      metrics: { ctr: "+40% Organic", cpc: "N/A", cpa: "Free Leads", roas: "+150% Traffic" },
-      tools: ["Google Search Console", "Ahrefs", "Canva", "Screaming Frog"],
-      image: "https://images.unsplash.com/photo-1571721795195-a2ca2d3370a9?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-      id: "proj-4",
-      title: "WhatsApp & Email Retargeting Workflow",
-      category: "Lifecycle Marketing",
-      description: "Automated broadcast messages and segmented email sequences targeting warm leads, boosting conversion rates.",
-      metrics: { ctr: "18% Open", cpc: "N/A", cpa: "-15%", roas: "5.1x" },
-      tools: ["Mailchimp", "WhatsApp Business API", "Canva"],
-      image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80"
     }
   ],
   interests: [

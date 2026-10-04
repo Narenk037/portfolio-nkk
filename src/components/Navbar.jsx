@@ -21,7 +21,7 @@ export const Navbar = ({ isAuthenticated }) => {
       setScrolled(window.scrollY > 20);
 
       // Active Section Highlighting
-      const sections = ['home', 'about', 'skills', 'experience', 'projects', 'certificates', 'contact'];
+      const sections = ['home', 'about', 'skills', 'experience', 'certificates', 'contact'];
       for (const sectionId of sections) {
         const el = document.getElementById(sectionId);
         if (el) {
@@ -43,7 +43,6 @@ export const Navbar = ({ isAuthenticated }) => {
     { name: 'About', href: '#about', id: 'about' },
     { name: 'Skills', href: '#skills', id: 'skills' },
     { name: 'Experience', href: '#experience', id: 'experience' },
-    { name: 'Campaigns', href: '#projects', id: 'projects' },
     { name: 'Certificates', href: '#certificates', id: 'certificates' },
     { name: 'Contact', href: '#contact', id: 'contact' },
   ];
