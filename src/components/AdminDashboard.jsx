@@ -1,54 +1,54 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
+  ShieldCheck, 
   LogOut, 
-  Plus, 
-  Trash2, 
-  Edit3, 
-  Save, 
-  X, 
   Layers, 
   Briefcase, 
   Award, 
-  FolderKanban, 
-  Inbox, 
-  CheckCircle2, 
-  ShieldCheck, 
-  Search, 
-  ArrowLeft,
-  Sparkles
+  Plus, 
+  Trash2, 
+  Edit3, 
+  X, 
+  Inbox,
+  ArrowLeft
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { TiltCard } from './TiltCard';
 import { 
-  subscribePortfolioData, 
+  logoutAdmin, 
   addCollectionItem, 
   updateCollectionItem, 
-  deleteCollectionItem, 
-  logoutAdmin
+  deleteCollectionItem 
 } from '../services/portfolioService';
-import { TiltCard } from './TiltCard';
 
 export const AdminDashboard = ({ onLogout }) => {
-  const [data, setData] = useState({
-    skills: [],
-    experience: [],
-    certificates: [],
-    projects: [],
-    messages: []
-  });
-
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('skills');
-  const [editingItem, setEditingItem] = useState(null);
   const [isNewModalOpen, setIsNewModalOpen] = useState(false);
   const [formData, setFormData] = useState({});
+  const [editingItem, setEditingItem] = useState(null);
 
-  const navigate = useNavigate();
+  // Read current live data from Window custom state or localStorage fallback
+  const [data, setData] = useState(() => {
+    try {
+      const stored = localStorage.getItem("nkk_portfolio_local_data_v2");
+      return stored ? JSON.parse(stored) : {};
+    } catch (e) {
+      return {};
+    }
+  });
 
-  useEffect(() => {
-    const unsub = subscribePortfolioData((updatedData) => {
-      setData(updatedData);
-    });
-    return () => unsub();
+  // Listen to live data changes
+  React.useEffect(() => {
+    const handleUpdate = () => {
+      try {
+        const stored = localStorage.getItem("nkk_portfolio_local_data_v2");
+        if (stored) setData(JSON.parse(stored));
+      } catch (e) {}
+    };
+    window.addEventListener("portfolioDataUpdated", handleUpdate);
+    return () => window.removeEventListener("portfolioDataUpdated", handleUpdate);
   }, []);
 
   const handleLogout = async () => {
@@ -135,12 +135,11 @@ export const AdminDashboard = ({ onLogout }) => {
         </div>
       </div>
 
-      {/* Tabs Row */}
+      {/* Tabs Row (Campaigns & Projects Removed) */}
       <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-3">
         {[
           { id: 'skills', label: 'Skills Manager', icon: Layers, count: (data.skills || []).length },
           { id: 'experience', label: 'Experience Timeline', icon: Briefcase, count: (data.experience || []).length },
-          { id: 'projects', label: 'Campaigns & Projects', icon: FolderKanban, count: (data.projects || []).length },
           { id: 'certificates', label: 'Certificates', icon: Award, count: (data.certificates || []).length },
           { id: 'messages', label: 'Messages Inbox', icon: Inbox, count: (data.messages || []).length },
         ].map((tab) => {
@@ -180,7 +179,7 @@ export const AdminDashboard = ({ onLogout }) => {
         {activeTab !== 'messages' && (
           <button
             onClick={handleOpenCreate}
-            className="btn-primary flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold"
+            className="btn-primary flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold shadow-sm"
           >
             <Plus className="w-4 h-4" />
             <span>Add New {activeTab.slice(0, -1)}</span>
@@ -188,25 +187,21 @@ export const AdminDashboard = ({ onLogout }) => {
         )}
       </div>
 
-      {/* Tab Data Display */}
-
       {/* 1. SKILLS */}
       {activeTab === 'skills' && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {(data.skills || []).map((skill) => (
-            <TiltCard key={skill.id} className="p-5 space-y-3 relative border-slate-200">
+            <TiltCard key={skill.id} className="p-6 space-y-3 border-slate-200">
               <div className="flex items-start justify-between">
                 <div>
-                  <span className="text-[10px] font-bold uppercase text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">
-                    {skill.category || 'Skill'}
-                  </span>
-                  <h3 className="font-bold text-slate-900 text-base mt-1">{skill.name}</h3>
+                  <span className="text-xs font-semibold text-blue-600">{skill.category}</span>
+                  <h3 className="text-lg font-bold text-slate-900">{skill.name}</h3>
                 </div>
-                <div className="flex items-center gap-1">
-                  <button onClick={() => handleOpenEdit(skill)} className="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-slate-100">
+                <div className="flex items-center gap-2">
+                  <button onClick={() => handleOpenEdit(skill)} className="p-2 rounded-lg text-slate-500 hover:text-blue-600 hover:bg-slate-100">
                     <Edit3 className="w-4 h-4" />
                   </button>
-                  <button onClick={() => handleDelete(skill.id)} className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-slate-100">
+                  <button onClick={() => handleDelete(skill.id)} className="p-2 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-slate-100">
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
@@ -253,32 +248,7 @@ export const AdminDashboard = ({ onLogout }) => {
         </div>
       )}
 
-      {/* 3. PROJECTS */}
-      {activeTab === 'projects' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {(data.projects || []).map((proj) => (
-            <TiltCard key={proj.id} className="p-6 space-y-3 border-slate-200">
-              <div className="flex items-start justify-between">
-                <div>
-                  <span className="text-xs font-bold text-sky-600 bg-sky-50 px-2 py-0.5 rounded border border-sky-200">{proj.category}</span>
-                  <h3 className="text-lg font-bold text-slate-900 mt-1">{proj.title}</h3>
-                </div>
-                <div className="flex items-center gap-1">
-                  <button onClick={() => handleOpenEdit(proj)} className="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-slate-100">
-                    <Edit3 className="w-4 h-4" />
-                  </button>
-                  <button onClick={() => handleDelete(proj.id)} className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-slate-100">
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-              <p className="text-xs text-slate-600">{proj.description}</p>
-            </TiltCard>
-          ))}
-        </div>
-      )}
-
-      {/* 4. CERTIFICATES */}
+      {/* 3. CERTIFICATES */}
       {activeTab === 'certificates' && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {(data.certificates || []).map((cert) => (
@@ -303,7 +273,7 @@ export const AdminDashboard = ({ onLogout }) => {
         </div>
       )}
 
-      {/* 5. MESSAGES INBOX */}
+      {/* 4. MESSAGES INBOX */}
       {activeTab === 'messages' && (
         <div className="space-y-4">
           {(!data.messages || data.messages.length === 0) ? (
@@ -464,32 +434,6 @@ export const AdminDashboard = ({ onLogout }) => {
                   </>
                 )}
 
-                {activeTab === 'projects' && (
-                  <>
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">Campaign Project Title</label>
-                      <input
-                        type="text"
-                        required
-                        value={formData.title || ''}
-                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                        placeholder="e.g. Meta Lead Generation Funnel"
-                        className="w-full p-3 rounded-xl border border-slate-300 text-sm"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">Description</label>
-                      <textarea
-                        rows="3"
-                        value={formData.description || ''}
-                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                        placeholder="Campaign target, strategy and outcome..."
-                        className="w-full p-3 rounded-xl border border-slate-300 text-sm"
-                      />
-                    </div>
-                  </>
-                )}
-
                 {activeTab === 'certificates' && (
                   <>
                     <div>
@@ -520,20 +464,18 @@ export const AdminDashboard = ({ onLogout }) => {
                   <button
                     type="button"
                     onClick={() => setIsNewModalOpen(false)}
-                    className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200"
+                    className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="btn-primary px-5 py-2.5 rounded-xl text-xs font-bold"
+                    className="btn-primary px-5 py-2 rounded-xl text-xs font-semibold shadow-sm"
                   >
                     Save Changes
                   </button>
                 </div>
-
               </form>
-
             </motion.div>
           </div>
         )}
